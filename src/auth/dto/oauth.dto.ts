@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class OAuthStrategyValidate {
+export class OAuthDto {
   @IsNotEmpty()
   @IsString()
   provider: string;
