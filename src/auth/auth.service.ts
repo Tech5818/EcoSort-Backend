@@ -11,31 +11,28 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwtUtil: JwtUtil,
   ) {}
-  async getJwt(user: OAuthDto) {}
+
   async loginUser(data: OAuthDto) {
     let user = await this.userRepository.findOne({
-      where: {
-        id: data.id,
-      },
+      where: { id: data.id },
     });
 
     if (!user) {
-      const token = this.jwtUtil.sign({
-        email: data.email,
-        nickname: data.nickname,
-        photo: data.photo,
-      });
+      await this.userRepository.insert(data);
 
-      console.log(token);
-
-      user = user = this.userRepository.create({
-        id: data.id,
-        token,
-        provider: data.provider,
-      });
-
-      await this.userRepository.save(user);
+      user = await this.userRepository.findOne({ where: { id: data.id } });
     }
-    return user;
+
+    const payload = {
+      id: user.id,
+      provider: user.provider,
+      email: user.email,
+      nickname: user.nickname,
+      photo: user.photo,
+    };
+
+    const token = this.jwtUtil.sign(payload);
+
+    return token;
   }
 }

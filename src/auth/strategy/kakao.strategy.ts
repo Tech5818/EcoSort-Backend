@@ -20,12 +20,13 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     profile: Profile,
   ): Promise<OAuthDto> {
     const { id: profile_id, kakao_account, properties } = profile._json;
+
     return {
       provider: 'kakao',
       id: profile_id,
       email: kakao_account.email,
       nickname: properties.nickname,
-      photo: properties.thumnail_image_url,
+      photo: properties.thumbnail_image,
     };
   }
 }

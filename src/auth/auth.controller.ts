@@ -9,6 +9,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
+import { OAuthDto } from './dto/oauth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +24,8 @@ export class AuthController {
   async googleLoginCallback(@Req() req: Request, @Res() res: Response) {
     const { user } = req;
 
-    return res.status(HttpStatus.OK).json(user);
+    const token = await this.authService.loginUser(user as OAuthDto);
+    return res.redirect(`http://localhost:5173/callback?token=${token}`);
   }
 
   @Get('kakao')
@@ -35,7 +37,9 @@ export class AuthController {
   async kakaoLoginCallback(@Req() req: Request, @Res() res: Response) {
     const { user } = req;
 
-    return res.status(HttpStatus.OK).json(user);
+    const token = await this.authService.loginUser(user as OAuthDto);
+
+    return res.status(HttpStatus.OK).json({ token });
   }
 
   @Get('naver')
@@ -47,7 +51,9 @@ export class AuthController {
   async naverLoginCallback(@Req() req: Request, @Res() res: Response) {
     const { user } = req;
 
-    return res.status(HttpStatus.OK).json(user);
+    const token = await this.authService.loginUser(user as OAuthDto);
+
+    return res.status(HttpStatus.OK).json({ token });
   }
 
   @Get('protected')

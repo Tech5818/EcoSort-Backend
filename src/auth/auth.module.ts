@@ -6,18 +6,11 @@ import { KakaoStrategy } from './strategy/kakao.strategy';
 import { NaverStrategy } from './strategy/naver.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entity/user.entity';
-import { UserRepository } from 'src/repository';
 import { JwtUtilModule } from 'src/util/jwt/jwt-util.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), JwtUtilModule],
-  providers: [
-    AuthService,
-    GoogleStrategy,
-    KakaoStrategy,
-    NaverStrategy,
-    UserRepository,
-  ],
+  providers: [AuthService, GoogleStrategy, KakaoStrategy, NaverStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

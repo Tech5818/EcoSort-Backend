@@ -5,9 +5,15 @@ export class User {
   @PrimaryColumn()
   id: string;
 
-  @Column({ unique: true })
-  token: string;
-
   @Column()
   provider: string;
+
+  @Column()
+  email: string;
+
+  @Column()
+  nickname: string;
+
+  @Column()
+  photo: string;
 }
